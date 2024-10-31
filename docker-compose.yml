@@ -1,11 +1,5 @@
 version: '3'
 services:
-  cassandra:
-    image: cassandra:3.9
-    container_name: kong-tests-cassandra
-    ports:
-      - "9042:9042"
-
   postgres:
     build: ./postgres
     container_name: kong-tests-postgres
