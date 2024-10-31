@@ -25,3 +25,36 @@ services:
     ports:
       - "15002:9000"
       - "15003:9001"
+
+  keycloak:
+    container_name: kong-tests-keycloak
+    image: quay.io/keycloak/keycloak:22.0
+    profiles:
+      - all
+      - idp
+    command:
+      - >
+        start-dev
+        --https-trust-store-file /tmp/truststore.jks
+        --https-trust-store-password=password
+        --https-client-auth=request
+        --https-protocols=TLSv1.2
+        --https-certificate-file=/tmp/server.crt
+        --https-certificate-key-file=/tmp/server.key
+        --https-port=8543
+        --hostname='keycloak'
+        --hostname-strict-backchannel=true
+        --import-realm
+    volumes:
+      - ./keycloak/demo.json:/opt/keycloak/data/import/demo.json
+      - ./keycloak/certs/truststore.jks:/tmp/truststore.jks
+      - ./keycloak/certs/server.crt:/tmp/server.crt
+      - ./keycloak/certs/server.key:/tmp/server.key
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: test
+      DB_VENDOR: h2
+      JAVA_OPTS_APPEND: -Dkeycloak.migration.strategy=OVERWRITE_EXISTING
+    ports:
+      - "8080:8080"
+      - "8543:8543"

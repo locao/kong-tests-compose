@@ -8,10 +8,20 @@ The following containers will be created:
 - kong-tests-redis
 - kong-tests-grpcbin
 
+If the `--profile idp` flag is used, the following container will be created:
+
+- kong-tests-keycloak
+
 ### Usage
 
 ```
 $ docker-compose up
+```
+
+or
+
+```
+$ docker-compose --profile [idp|all] up
 ```
 
 ### License
